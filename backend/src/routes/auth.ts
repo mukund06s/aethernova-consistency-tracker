@@ -112,6 +112,7 @@ router.post('/login', validate(loginSchema), async (req: AuthRequest, res: Respo
             },
         });
     } catch (error) {
+        console.error('LOGIN_ROUTE_ERROR:', error);
         next(error);
     }
 });
