@@ -10,6 +10,18 @@ const router = (0, express_1.Router)();
 const completeSchema = zod_1.z.object({
     notes: zod_1.z.string().max(500, 'Notes too long').optional(),
 });
+const MOTIVATIONAL_MESSAGES = [
+    '🎉 Habit marked complete!',
+    '🚀 You are on a roll!',
+    '🌟 Great job staying consistent!',
+    '💪 Strength comes from discipline!',
+    '🔥 You are unstoppable today!',
+    '✨ Another step towards your best self!',
+    '🏆 Level up! Keep it going!',
+];
+function getRandomMotivation() {
+    return MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)];
+}
 // All routes require auth
 router.use(auth_1.authenticate);
 // POST /api/completions/:habitId – mark habit complete for today
@@ -56,7 +68,7 @@ router.post('/:habitId', (0, validate_1.validate)(completeSchema), async (req, r
         const longestStreak = (0, habits_1.calculateLongestStreak)(dates);
         res.status(201).json({
             success: true,
-            message: '🎉 Habit marked complete!',
+            message: getRandomMotivation(),
             data: { completion, currentStreak, longestStreak },
         });
     }

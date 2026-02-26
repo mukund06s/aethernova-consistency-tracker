@@ -27,8 +27,12 @@ router.use(auth_1.authenticate);
 // GET /api/habits – list user's habits
 router.get('/', async (req, res, next) => {
     try {
+        const { archived = 'false' } = req.query;
         const habits = await prisma_1.prisma.habit.findMany({
-            where: { userId: req.userId },
+            where: {
+                userId: req.userId,
+                archived: archived === 'true'
+            },
             orderBy: { order: 'asc' },
             include: {
                 completions: {
@@ -137,6 +141,90 @@ router.delete('/:id', async (req, res, next) => {
         next(error);
     }
 });
+// POST /api/habits/:id/freeze – freeze habit
+const freezeSchema = zod_1.z.object({ days: zod_1.z.enum(['1', '2', '3']).optional() });
+router.post('/:id/freeze', (0, validate_1.validate)(freezeSchema), async (req, res, next) => {
+    try {
+        const habitId = String(req.params.id);
+        const days = parseInt(req.body.days || '1');
+        // ... rest of the endpoint ...
+        const habit = await prisma_1.prisma.habit.findFirst({
+            where: { id: habitId, userId: req.userId },
+        });
+        if (!habit) {
+            res.status(404).json({ success: false, message: 'Habit not found.' });
+            return;
+        }
+        if (habit.freezesAvailable <= 0) {
+            res.status(400).json({ success: false, message: 'No freezes available.' });
+            return;
+        }
+        const frozenUntil = new Date();
+        frozenUntil.setDate(frozenUntil.getDate() + days);
+        frozenUntil.setHours(23, 59, 59, 999);
+        const updated = await prisma_1.prisma.habit.update({
+            where: { id: habitId },
+            data: {
+                isFrozen: true,
+                frozenUntil,
+                freezesAvailable: { decrement: 1 },
+            },
+        });
+        res.json({ success: true, message: `Habit frozen for ${days} days.`, data: { habit: updated } });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+// DELETE /api/habits/:id/freeze – unfreeze habit early
+router.delete('/:id/freeze', async (req, res, next) => {
+    try {
+        const habitId = String(req.params.id);
+        const habit = await prisma_1.prisma.habit.findFirst({
+            where: { id: habitId, userId: req.userId },
+        });
+        if (!habit) {
+            res.status(404).json({ success: false, message: 'Habit not found.' });
+            return;
+        }
+        const updated = await prisma_1.prisma.habit.update({
+            where: { id: habitId },
+            data: {
+                isFrozen: false,
+                frozenUntil: null,
+            },
+        });
+        res.json({ success: true, message: 'Habit unfrozen.', data: { habit: updated } });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+// PATCH /api/habits/:id/archive – archive/unarchive habit
+router.patch('/:id/archive', async (req, res, next) => {
+    try {
+        const habitId = String(req.params.id);
+        const habit = await prisma_1.prisma.habit.findFirst({
+            where: { id: habitId, userId: req.userId },
+        });
+        if (!habit) {
+            res.status(404).json({ success: false, message: 'Habit not found.' });
+            return;
+        }
+        const updated = await prisma_1.prisma.habit.update({
+            where: { id: habitId },
+            data: { archived: !habit.archived },
+        });
+        res.json({
+            success: true,
+            message: updated.archived ? 'Habit archived.' : 'Habit restored.',
+            data: { habit: updated },
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
 // PATCH /api/habits/reorder/batch – reorder habits via drag-drop
 router.patch('/reorder/batch', (0, validate_1.validate)(reorderSchema), async (req, res, next) => {
     try {
@@ -159,25 +247,61 @@ router.patch('/reorder/batch', (0, validate_1.validate)(reorderSchema), async (r
     }
 });
 // ── Helper: streak calculation ──────────────────────────────────────────────
-function calculateCurrentStreak(dates) {
-    if (!dates.length)
+function calculateCurrentStreak(dates, habit) {
+    if (!dates.length && (!habit || !habit.isFrozen))
         return 0;
     const today = getLocalDate();
     const yesterday = offsetDate(today, -1);
     const sortedDates = [...new Set(dates)].sort().reverse();
+    // If frozen and today is within frozen period, streak remains active
+    if (habit?.isFrozen && habit.frozenUntil) {
+        const now = new Date();
+        const frozenUntil = new Date(habit.frozenUntil);
+        if (now <= frozenUntil) {
+            // Treat as if completed today/yesterday to keep going
+            // We'll calculate from the last actual completion
+        }
+        else {
+            // Frozen period passed, should be reset if not completed since
+            // but the cron or some logic should probably handle isFrozen=false
+        }
+    }
     const startDate = sortedDates[0] === today || sortedDates[0] === yesterday ? sortedDates[0] : null;
-    if (!startDate)
+    // special case: if frozen today, streak is maintained even if no completion today/yesterday
+    let current = startDate || (habit?.isFrozen ? today : null);
+    if (!current)
         return 0;
     let streak = 0;
-    let current = startDate;
-    for (const date of sortedDates) {
-        if (date === current) {
+    let dateIdx = 0;
+    // Iterate backwards from 'current' (today or yesterday)
+    let checkDate = current;
+    while (true) {
+        if (dateIdx < sortedDates.length && sortedDates[dateIdx] === checkDate) {
             streak++;
-            current = offsetDate(current, -1);
+            dateIdx++;
+            checkDate = offsetDate(checkDate, -1);
+        }
+        else if (habit?.isFrozen && habit.frozenUntil) {
+            const untilStr = habit.frozenUntil instanceof Date
+                ? habit.frozenUntil.toISOString().split('T')[0]
+                : String(habit.frozenUntil).split('T')[0];
+            // If checkDate is within 3 days of frozenUntil and isFrozen is active
+            if (checkDate <= untilStr && checkDate >= offsetDate(untilStr, -3)) {
+                streak++;
+                checkDate = offsetDate(checkDate, -1);
+                // Skip actual completion if it exists on this date
+                if (dateIdx < sortedDates.length && sortedDates[dateIdx] === checkDate) {
+                    dateIdx++;
+                }
+                continue;
+            }
+            break;
         }
         else {
             break;
         }
+        if (streak > 3650)
+            break; // emergency break
     }
     return streak;
 }

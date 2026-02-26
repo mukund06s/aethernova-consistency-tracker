@@ -26,6 +26,8 @@ const loginSchema = zod_1.z.object({
 const settingsSchema = zod_1.z.object({
     name: zod_1.z.string().min(2).max(100).optional(),
     reminderTime: zod_1.z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format (HH:MM)').optional(),
+    confettiEnabled: zod_1.z.boolean().optional(),
+    soundEnabled: zod_1.z.boolean().optional(),
 });
 const setCookieToken = (res, userId, email) => {
     const token = jsonwebtoken_1.default.sign({ userId, email }, process.env.JWT_SECRET, {
@@ -57,7 +59,7 @@ router.post('/register', (0, validate_1.validate)(registerSchema), async (req, r
         const passwordHash = await bcryptjs_1.default.hash(password, 12);
         const user = await prisma_1.prisma.user.create({
             data: { name, email, passwordHash },
-            select: { id: true, name: true, email: true, reminderTime: true, createdAt: true },
+            select: { id: true, name: true, email: true, reminderTime: true, confettiEnabled: true, soundEnabled: true, createdAt: true },
         });
         setCookieToken(res, user.id, user.email);
         res.status(201).json({
@@ -95,7 +97,7 @@ router.post('/login', (0, validate_1.validate)(loginSchema), async (req, res, ne
             success: true,
             message: 'Welcome back!',
             data: {
-                user: { id: user.id, name: user.name, email: user.email, reminderTime: user.reminderTime, createdAt: user.createdAt },
+                user: { id: user.id, name: user.name, email: user.email, reminderTime: user.reminderTime, confettiEnabled: user.confettiEnabled, soundEnabled: user.soundEnabled, createdAt: user.createdAt },
             },
         });
     }
@@ -113,7 +115,7 @@ router.get('/me', auth_1.authenticate, async (req, res, next) => {
     try {
         const user = await prisma_1.prisma.user.findUnique({
             where: { id: req.userId },
-            select: { id: true, name: true, email: true, reminderTime: true, createdAt: true },
+            select: { id: true, name: true, email: true, reminderTime: true, confettiEnabled: true, soundEnabled: true, createdAt: true },
         });
         if (!user) {
             res.status(404).json({ success: false, message: 'User not found.' });
@@ -131,12 +133,28 @@ router.patch('/settings', auth_1.authenticate, (0, validate_1.validate)(settings
         const user = await prisma_1.prisma.user.update({
             where: { id: req.userId },
             data: req.body,
-            select: { id: true, name: true, email: true, reminderTime: true, createdAt: true },
+            select: { id: true, name: true, email: true, reminderTime: true, confettiEnabled: true, soundEnabled: true, createdAt: true },
         });
         res.json({
             success: true,
             message: 'Settings updated successfully!',
             data: { user },
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+// DELETE /api/auth/account – delete user account
+router.delete('/account', auth_1.authenticate, async (req, res, next) => {
+    try {
+        await prisma_1.prisma.user.delete({
+            where: { id: req.userId },
+        });
+        res.clearCookie('token', { path: '/' });
+        res.json({
+            success: true,
+            message: 'Account deleted successfully. We hope to see you again!',
         });
     }
     catch (error) {
