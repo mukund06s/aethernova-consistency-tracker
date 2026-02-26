@@ -1,3 +1,16 @@
+import { execSync } from 'child_process';
+
+try {
+    console.log('Running database migrations...');
+    execSync('node node_modules/prisma/build/index.js migrate deploy', {
+        stdio: 'inherit',
+        cwd: process.cwd()
+    });
+    console.log('Database migrations completed successfully');
+} catch (error) {
+    console.log('Migration note:', error);
+}
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';

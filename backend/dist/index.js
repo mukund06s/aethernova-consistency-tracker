@@ -3,6 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const child_process_1 = require("child_process");
+try {
+    console.log('Running database migrations...');
+    (0, child_process_1.execSync)('node node_modules/prisma/build/index.js migrate deploy', {
+        stdio: 'inherit',
+        cwd: process.cwd()
+    });
+    console.log('Database migrations completed successfully');
+}
+catch (error) {
+    console.log('Migration note:', error);
+}
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
