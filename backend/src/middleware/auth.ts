@@ -5,6 +5,12 @@ import { prisma } from '../lib/prisma';
 export interface AuthRequest extends Request {
     userId?: string;
     userName?: string;
+    // Explicitly define these for extra safety in production build
+    body: any;
+    params: any;
+    query: any;
+    headers: any;
+    cookies: any;
 }
 
 interface JwtPayload {
