@@ -6,7 +6,8 @@ try {
         cwd: process.cwd()
     });
 } catch (e) {
-    console.log('Migration error:', e);
+    console.error('❌ CRITICAL MIGRATION ERROR:', e);
+    console.log('Check your DATABASE_URL in Render environment variables.');
 }
 
 import express from 'express';
