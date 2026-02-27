@@ -9,6 +9,14 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://aethernova-consistency-tracker.onrender.com/api/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
