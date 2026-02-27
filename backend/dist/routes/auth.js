@@ -7,7 +7,7 @@ const express_1 = require("express");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const zod_1 = require("zod");
-const prisma_1 = require("../lib/prisma");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const validate_1 = require("../middleware/validate");
 const auth_1 = require("../middleware/auth");
 const router = (0, express_1.Router)();
@@ -47,7 +47,7 @@ const setCookieToken = (res, userId, email) => {
 router.post('/register', (0, validate_1.validate)(registerSchema), async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
-        const existing = await prisma_1.prisma.user.findUnique({ where: { email } });
+        const existing = await prisma_1.default.user.findUnique({ where: { email } });
         if (existing) {
             res.status(409).json({
                 success: false,
@@ -57,7 +57,7 @@ router.post('/register', (0, validate_1.validate)(registerSchema), async (req, r
             return;
         }
         const passwordHash = await bcryptjs_1.default.hash(password, 12);
-        const user = await prisma_1.prisma.user.create({
+        const user = await prisma_1.default.user.create({
             data: { name, email, passwordHash },
             select: { id: true, name: true, email: true, reminderTime: true, confettiEnabled: true, soundEnabled: true, createdAt: true },
         });
@@ -76,7 +76,7 @@ router.post('/register', (0, validate_1.validate)(registerSchema), async (req, r
 router.post('/login', (0, validate_1.validate)(loginSchema), async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        const user = await prisma_1.prisma.user.findUnique({ where: { email } });
+        const user = await prisma_1.default.user.findUnique({ where: { email } });
         if (!user) {
             res.status(401).json({
                 success: false,
@@ -102,6 +102,7 @@ router.post('/login', (0, validate_1.validate)(loginSchema), async (req, res, ne
         });
     }
     catch (error) {
+        console.error('LOGIN_ROUTE_ERROR:', error);
         next(error);
     }
 });
@@ -113,7 +114,7 @@ router.post('/logout', (_req, res) => {
 // GET /api/auth/me
 router.get('/me', auth_1.authenticate, async (req, res, next) => {
     try {
-        const user = await prisma_1.prisma.user.findUnique({
+        const user = await prisma_1.default.user.findUnique({
             where: { id: req.userId },
             select: { id: true, name: true, email: true, reminderTime: true, confettiEnabled: true, soundEnabled: true, createdAt: true },
         });
@@ -130,7 +131,7 @@ router.get('/me', auth_1.authenticate, async (req, res, next) => {
 // PATCH /api/auth/settings – update user settings (reminders)
 router.patch('/settings', auth_1.authenticate, (0, validate_1.validate)(settingsSchema), async (req, res, next) => {
     try {
-        const user = await prisma_1.prisma.user.update({
+        const user = await prisma_1.default.user.update({
             where: { id: req.userId },
             data: req.body,
             select: { id: true, name: true, email: true, reminderTime: true, confettiEnabled: true, soundEnabled: true, createdAt: true },
@@ -148,7 +149,7 @@ router.patch('/settings', auth_1.authenticate, (0, validate_1.validate)(settings
 // DELETE /api/auth/account – delete user account
 router.delete('/account', auth_1.authenticate, async (req, res, next) => {
     try {
-        await prisma_1.prisma.user.delete({
+        await prisma_1.default.user.delete({
             where: { id: req.userId },
         });
         res.clearCookie('token', { path: '/' });

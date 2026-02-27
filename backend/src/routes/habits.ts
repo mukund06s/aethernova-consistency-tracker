@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { prisma } from '../lib/prisma';
+import prisma from '../lib/prisma';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 

@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.calculateCurrentStreak = calculateCurrentStreak;
 exports.calculateLongestStreak = calculateLongestStreak;
 const express_1 = require("express");
 const zod_1 = require("zod");
-const prisma_1 = require("../lib/prisma");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const auth_1 = require("../middleware/auth");
 const validate_1 = require("../middleware/validate");
 const router = (0, express_1.Router)();
@@ -28,7 +31,7 @@ router.use(auth_1.authenticate);
 router.get('/', async (req, res, next) => {
     try {
         const { archived = 'false' } = req.query;
-        const habits = await prisma_1.prisma.habit.findMany({
+        const habits = await prisma_1.default.habit.findMany({
             where: {
                 userId: req.userId,
                 archived: archived === 'true'
@@ -56,8 +59,8 @@ router.get('/', async (req, res, next) => {
 // POST /api/habits – create habit
 router.post('/', (0, validate_1.validate)(createHabitSchema), async (req, res, next) => {
     try {
-        const count = await prisma_1.prisma.habit.count({ where: { userId: req.userId } });
-        const habit = await prisma_1.prisma.habit.create({
+        const count = await prisma_1.default.habit.count({ where: { userId: req.userId } });
+        const habit = await prisma_1.default.habit.create({
             data: {
                 ...req.body,
                 userId: req.userId,
@@ -78,7 +81,7 @@ router.post('/', (0, validate_1.validate)(createHabitSchema), async (req, res, n
 router.get('/:id', async (req, res, next) => {
     try {
         const habitId = String(req.params.id);
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
             include: {
                 completions: {
@@ -106,14 +109,14 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', (0, validate_1.validate)(updateHabitSchema), async (req, res, next) => {
     try {
         const habitId = String(req.params.id);
-        const existing = await prisma_1.prisma.habit.findFirst({
+        const existing = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!existing) {
             res.status(404).json({ success: false, message: 'Habit not found.' });
             return;
         }
-        const habit = await prisma_1.prisma.habit.update({
+        const habit = await prisma_1.default.habit.update({
             where: { id: habitId },
             data: req.body,
         });
@@ -127,14 +130,14 @@ router.put('/:id', (0, validate_1.validate)(updateHabitSchema), async (req, res,
 router.delete('/:id', async (req, res, next) => {
     try {
         const habitId = String(req.params.id);
-        const existing = await prisma_1.prisma.habit.findFirst({
+        const existing = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!existing) {
             res.status(404).json({ success: false, message: 'Habit not found.' });
             return;
         }
-        await prisma_1.prisma.habit.delete({ where: { id: habitId } });
+        await prisma_1.default.habit.delete({ where: { id: habitId } });
         res.json({ success: true, message: 'Habit deleted.' });
     }
     catch (error) {
@@ -148,7 +151,7 @@ router.post('/:id/freeze', (0, validate_1.validate)(freezeSchema), async (req, r
         const habitId = String(req.params.id);
         const days = parseInt(req.body.days || '1');
         // ... rest of the endpoint ...
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!habit) {
@@ -162,7 +165,7 @@ router.post('/:id/freeze', (0, validate_1.validate)(freezeSchema), async (req, r
         const frozenUntil = new Date();
         frozenUntil.setDate(frozenUntil.getDate() + days);
         frozenUntil.setHours(23, 59, 59, 999);
-        const updated = await prisma_1.prisma.habit.update({
+        const updated = await prisma_1.default.habit.update({
             where: { id: habitId },
             data: {
                 isFrozen: true,
@@ -180,14 +183,14 @@ router.post('/:id/freeze', (0, validate_1.validate)(freezeSchema), async (req, r
 router.delete('/:id/freeze', async (req, res, next) => {
     try {
         const habitId = String(req.params.id);
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!habit) {
             res.status(404).json({ success: false, message: 'Habit not found.' });
             return;
         }
-        const updated = await prisma_1.prisma.habit.update({
+        const updated = await prisma_1.default.habit.update({
             where: { id: habitId },
             data: {
                 isFrozen: false,
@@ -204,14 +207,14 @@ router.delete('/:id/freeze', async (req, res, next) => {
 router.patch('/:id/archive', async (req, res, next) => {
     try {
         const habitId = String(req.params.id);
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!habit) {
             res.status(404).json({ success: false, message: 'Habit not found.' });
             return;
         }
-        const updated = await prisma_1.prisma.habit.update({
+        const updated = await prisma_1.default.habit.update({
             where: { id: habitId },
             data: { archived: !habit.archived },
         });
@@ -230,7 +233,7 @@ router.patch('/reorder/batch', (0, validate_1.validate)(reorderSchema), async (r
     try {
         const { habits } = req.body;
         const habitIds = habits.map((h) => h.id);
-        const ownedHabits = await prisma_1.prisma.habit.findMany({
+        const ownedHabits = await prisma_1.default.habit.findMany({
             where: { id: { in: habitIds }, userId: req.userId },
             select: { id: true },
         });
@@ -238,8 +241,8 @@ router.patch('/reorder/batch', (0, validate_1.validate)(reorderSchema), async (r
             res.status(403).json({ success: false, message: 'Unauthorized to reorder these habits.' });
             return;
         }
-        const updates = habits.map((h) => prisma_1.prisma.habit.update({ where: { id: h.id }, data: { order: h.order } }));
-        await prisma_1.prisma.$transaction(updates);
+        const updates = habits.map((h) => prisma_1.default.habit.update({ where: { id: h.id }, data: { order: h.order } }));
+        await prisma_1.default.$transaction(updates);
         res.json({ success: true, message: 'Habits reordered.' });
     }
     catch (error) {

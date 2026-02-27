@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotificationService = void 0;
-const prisma_1 = require("./prisma");
+const prisma_1 = __importDefault(require("./prisma"));
 /**
  * NotificationService
  *
@@ -17,7 +20,7 @@ exports.NotificationService = {
         const now = new Date();
         const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
         console.log(`[NotificationService] Checking reminders for ${currentTime}...`);
-        const usersToRemind = await prisma_1.prisma.user.findMany({
+        const usersToRemind = await prisma_1.default.user.findMany({
             where: {
                 reminderTime: currentTime,
             },

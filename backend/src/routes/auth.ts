@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import { prisma } from '../lib/prisma';
+import prisma from '../lib/prisma';
 import { validate } from '../middleware/validate';
 import { authenticate, AuthRequest } from '../middleware/auth';
 

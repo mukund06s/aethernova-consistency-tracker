@@ -1,20 +1,10 @@
-import { execSync } from 'child_process';
-try {
-    console.log('Running migrations...');
-    execSync('node node_modules/prisma/build/index.js migrate deploy', {
-        stdio: 'inherit',
-        cwd: process.cwd()
-    });
-} catch (e) {
-    console.error('❌ CRITICAL MIGRATION ERROR:', e);
-    console.log('Check your DATABASE_URL in Render environment variables.');
-}
-
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+
+import prisma, { connectWithRetry } from './lib/prisma';
 
 import authRoutes from './routes/auth';
 import habitRoutes from './routes/habits';
@@ -52,8 +42,21 @@ app.use(cookieParser());
 app.use('/api', globalRateLimiter);
 
 // Health check
-app.get('/health', (_req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/health', async (_req, res) => {
+    try {
+        await prisma.$queryRaw`SELECT 1`;
+        res.json({
+            status: 'ok',
+            db: 'connected',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        res.status(503).json({
+            status: 'error',
+            db: 'disconnected',
+            timestamp: new Date().toISOString()
+        });
+    }
 });
 
 // Cache middleware for static-like content
@@ -76,9 +79,12 @@ app.use('/api/quotes', quoteRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`🚀 AetherNova API running on http://localhost:${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+
+    // Non-blocking connection check
+    await connectWithRetry();
 });
 
 export default app;

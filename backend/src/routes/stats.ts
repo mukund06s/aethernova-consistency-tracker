@@ -1,5 +1,5 @@
 import { Router, Response, NextFunction } from 'express';
-import { prisma } from '../lib/prisma';
+import prisma from '../lib/prisma';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { calculateCurrentStreak, calculateLongestStreak } from './habits';
 

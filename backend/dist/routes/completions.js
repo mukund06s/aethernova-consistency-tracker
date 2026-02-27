@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const zod_1 = require("zod");
-const prisma_1 = require("../lib/prisma");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const auth_1 = require("../middleware/auth");
 const validate_1 = require("../middleware/validate");
 const habits_1 = require("./habits");
@@ -30,7 +33,7 @@ router.post('/:habitId', (0, validate_1.validate)(completeSchema), async (req, r
         const habitId = String(req.params.habitId);
         const { notes } = req.body;
         // Verify habit belongs to user
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!habit) {
@@ -39,7 +42,7 @@ router.post('/:habitId', (0, validate_1.validate)(completeSchema), async (req, r
         }
         const today = new Date().toISOString().split('T')[0];
         // Check if already completed today (unique constraint guard)
-        const existing = await prisma_1.prisma.habitCompletion.findUnique({
+        const existing = await prisma_1.default.habitCompletion.findUnique({
             where: { habitId_date: { habitId, date: today } },
         });
         if (existing) {
@@ -49,7 +52,7 @@ router.post('/:habitId', (0, validate_1.validate)(completeSchema), async (req, r
             });
             return;
         }
-        const completion = await prisma_1.prisma.habitCompletion.create({
+        const completion = await prisma_1.default.habitCompletion.create({
             data: {
                 habitId,
                 userId: req.userId,
@@ -58,7 +61,7 @@ router.post('/:habitId', (0, validate_1.validate)(completeSchema), async (req, r
             },
         });
         // Calculate new streak after completion
-        const allCompletions = await prisma_1.prisma.habitCompletion.findMany({
+        const allCompletions = await prisma_1.default.habitCompletion.findMany({
             where: { habitId },
             select: { date: true },
             orderBy: { date: 'desc' },
@@ -81,21 +84,21 @@ router.delete('/:habitId/:date', async (req, res, next) => {
     try {
         const habitId = String(req.params.habitId);
         const date = String(req.params.date);
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!habit) {
             res.status(404).json({ success: false, message: 'Habit not found.' });
             return;
         }
-        const completion = await prisma_1.prisma.habitCompletion.findUnique({
+        const completion = await prisma_1.default.habitCompletion.findUnique({
             where: { habitId_date: { habitId, date } },
         });
         if (!completion) {
             res.status(404).json({ success: false, message: 'Completion not found.' });
             return;
         }
-        await prisma_1.prisma.habitCompletion.delete({
+        await prisma_1.default.habitCompletion.delete({
             where: { habitId_date: { habitId, date } },
         });
         res.json({ success: true, message: 'Completion removed.' });
@@ -109,7 +112,7 @@ router.get('/:habitId', async (req, res, next) => {
     try {
         const habitId = String(req.params.habitId);
         const { page = '1', limit = '50' } = req.query;
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!habit) {
@@ -120,13 +123,13 @@ router.get('/:habitId', async (req, res, next) => {
         const limitNum = parseInt(limit);
         const skip = (pageNum - 1) * limitNum;
         const [completions, total] = await Promise.all([
-            prisma_1.prisma.habitCompletion.findMany({
+            prisma_1.default.habitCompletion.findMany({
                 where: { habitId },
                 orderBy: { date: 'desc' },
                 skip,
                 take: limitNum,
             }),
-            prisma_1.prisma.habitCompletion.count({ where: { habitId } }),
+            prisma_1.default.habitCompletion.count({ where: { habitId } }),
         ]);
         res.json({
             success: true,
@@ -152,14 +155,14 @@ router.patch('/:habitId/:date', (0, validate_1.validate)(completeSchema), async 
         const date = String(req.params.date);
         const { notes } = req.body;
         // Verify habit belongs to user
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id: habitId, userId: req.userId },
         });
         if (!habit) {
             res.status(404).json({ success: false, message: 'Habit not found.' });
             return;
         }
-        const completion = await prisma_1.prisma.habitCompletion.update({
+        const completion = await prisma_1.default.habitCompletion.update({
             where: { habitId_date: { habitId, date } },
             data: { notes: notes || null },
         });

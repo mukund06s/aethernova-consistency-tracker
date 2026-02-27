@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const prisma_1 = require("../lib/prisma");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const auth_1 = require("../middleware/auth");
 const habits_1 = require("./habits");
 const router = (0, express_1.Router)();
@@ -11,7 +14,7 @@ router.get('/', async (req, res, next) => {
     try {
         const userId = req.userId;
         // Fetch all habits with their completions
-        const habits = await prisma_1.prisma.habit.findMany({
+        const habits = await prisma_1.default.habit.findMany({
             where: { userId },
             include: {
                 completions: {
@@ -43,7 +46,7 @@ router.get('/', async (req, res, next) => {
         const startStr = getLocalDateString(thirtyDaysAgo);
         const todayStr = getLocalDateString(today);
         const possibleSlots = 30 * totalHabits;
-        const totalCompletions = await prisma_1.prisma.habitCompletion.count({
+        const totalCompletions = await prisma_1.default.habitCompletion.count({
             where: { userId, date: { gte: startStr, lte: todayStr } },
         });
         const overallCompletionRate = possibleSlots > 0
@@ -82,7 +85,7 @@ router.get('/habit/:id', async (req, res, next) => {
     try {
         const id = String(req.params.id);
         // Verify habit belongs to user
-        const habit = await prisma_1.prisma.habit.findFirst({
+        const habit = await prisma_1.default.habit.findFirst({
             where: { id, userId: req.userId },
         });
         if (!habit) {
@@ -90,7 +93,7 @@ router.get('/habit/:id', async (req, res, next) => {
             return;
         }
         // Fetch completions separately for clean type inference
-        const completionRecords = await prisma_1.prisma.habitCompletion.findMany({
+        const completionRecords = await prisma_1.default.habitCompletion.findMany({
             where: { habitId: id },
             select: { date: true },
             orderBy: { date: 'asc' },
@@ -115,7 +118,7 @@ router.get('/habit/:id', async (req, res, next) => {
 router.get('/analytics', async (req, res, next) => {
     try {
         const userId = req.userId;
-        const habits = await prisma_1.prisma.habit.findMany({ where: { userId } });
+        const habits = await prisma_1.default.habit.findMany({ where: { userId } });
         if (!habits.length) {
             res.json({ success: true, data: { categoryStats: [], progression: [], bestDay: 'None' } });
             return;
@@ -129,7 +132,7 @@ router.get('/analytics', async (req, res, next) => {
             const totalPossible = catHabits.length * 30; // Last 30 days
             const thirtyDaysAgo = new Date();
             thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            const completions = await prisma_1.prisma.habitCompletion.count({
+            const completions = await prisma_1.default.habitCompletion.count({
                 where: {
                     habitId: { in: habitIds },
                     date: { gte: getLocalDateString(thirtyDaysAgo) }
@@ -147,7 +150,7 @@ router.get('/analytics', async (req, res, next) => {
             d.setDate(d.getDate() - (13 - i));
             return getLocalDateString(d);
         }).map(async (dateStr) => {
-            const completed = await prisma_1.prisma.habitCompletion.count({
+            const completed = await prisma_1.default.habitCompletion.count({
                 where: { userId, date: dateStr }
             });
             return {
@@ -156,7 +159,7 @@ router.get('/analytics', async (req, res, next) => {
             };
         }));
         // 3. Best Day of Week
-        const allCompletions = await prisma_1.prisma.habitCompletion.findMany({
+        const allCompletions = await prisma_1.default.habitCompletion.findMany({
             where: { userId },
             select: { date: true }
         });
@@ -192,7 +195,7 @@ router.get('/weekly-review', async (req, res, next) => {
     try {
         const userId = req.userId;
         // QUERY 1: Get ALL active habits for this user
-        const allHabits = await prisma_1.prisma.habit.findMany({
+        const allHabits = await prisma_1.default.habit.findMany({
             where: {
                 userId,
                 archived: false
@@ -218,7 +221,7 @@ router.get('/weekly-review', async (req, res, next) => {
         const startStr = getLocalDateString(lastMonday);
         const endStr = getLocalDateString(lastSunday);
         // QUERY 2: Get last week's completions
-        const completions = await prisma_1.prisma.habitCompletion.findMany({
+        const completions = await prisma_1.default.habitCompletion.findMany({
             where: {
                 userId,
                 date: { gte: startStr, lte: endStr }
@@ -320,7 +323,7 @@ async function buildWeeklyData(userId, totalHabits) {
     const today = new Date();
     const sevenDaysAgo = new Date(today);
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-    const completions = await prisma_1.prisma.habitCompletion.findMany({
+    const completions = await prisma_1.default.habitCompletion.findMany({
         where: {
             userId,
             date: {
@@ -352,7 +355,7 @@ async function buildHeatmap(userId, totalHabits) {
     const today = new Date();
     const ninetyDaysAgo = new Date(today);
     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 89);
-    const completions = await prisma_1.prisma.habitCompletion.findMany({
+    const completions = await prisma_1.default.habitCompletion.findMany({
         where: {
             userId,
             date: {

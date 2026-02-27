@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticate = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const prisma_1 = require("../lib/prisma");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const authenticate = async (req, res, next) => {
     try {
         const token = req.cookies?.token || req.headers.authorization?.replace('Bearer ', '');
@@ -18,7 +18,7 @@ const authenticate = async (req, res, next) => {
         }
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
         // Verify user still exists in DB
-        const user = await prisma_1.prisma.user.findUnique({
+        const user = await prisma_1.default.user.findUnique({
             where: { id: decoded.userId },
             select: { id: true, name: true },
         });
