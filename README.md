@@ -2,7 +2,7 @@
 
 A production-ready, full-stack habit tracking application built with Next.js 15 (App Router) + Express + PostgreSQL.
 
-**Live URL:** `https://your-app.vercel.app` _(deploy and update this)_
+**Live URL:** `https://aethernova-consistency-tracker.vercel.app`
 
 ---
 
@@ -282,7 +282,7 @@ To exceed the basic requirements, the following high-impact features were implem
    - `DATABASE_URL` (Render Postgres or external)
    - `JWT_SECRET` (generate: `openssl rand -hex 32`)
    - `NODE_ENV=production`
-   - `FRONTEND_URL=https://your-app.vercel.app`
+   - `FRONTEND_URL=https://aethernova-consistency-tracker.vercel.app`
 
 ### Frontend → Vercel
 
@@ -290,7 +290,7 @@ To exceed the basic requirements, the following high-impact features were implem
 2. Import project on [Vercel](https://vercel.com)
 3. Framework: **Next.js** (auto-detected)
 4. Add environment variable:
-   - `NEXT_PUBLIC_API_URL=https://your-backend.onrender.com`
+   - `NEXT_PUBLIC_API_URL=https://aethernova-consistency-tracker.onrender.com`
 5. Deploy! ✅
 
 ### PostgreSQL Options
