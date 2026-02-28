@@ -166,7 +166,7 @@ export default function DragDropList({ habits, onEdit, onDelete, onArchive, onCo
                     animate="visible"
                     role="list"
                     aria-label="Habits list – drag to reorder"
-                    className="space-y-4"
+                    className="space-y-3"
                 >
                     {localHabits.map((habit) => (
                         <motion.div key={habit.id} variants={itemVariants} role="listitem">

@@ -130,10 +130,10 @@ export default function HabitCard({
             whileHover={{ y: isDragging ? 0 : -6, scale: isDragging ? 1.03 : 1.02 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17, bounce: 0, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-                'glass glass-hover rounded-2xl p-5 mb-4 group relative',
-                isDragging && 'shadow-[0_0_25px_rgba(99,102,241,0.5)] ring-2 ring-primary/50 rotate-1 z-50 cursor-grabbing bg-foreground/[0.05]',
+                'glass glass-hover rounded-xl p-3 mb-3 group relative',
+                isDragging && 'shadow-[0_0_20px_rgba(99,102,241,0.4)] ring-2 ring-primary/40 rotate-1 z-50 cursor-grabbing bg-foreground/[0.05]',
                 !isDragging && 'cursor-default transition-all',
-                isFrozen && 'bg-blue-500/[0.05] border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.1)]'
+                isFrozen && 'bg-blue-500/[0.05] border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]'
             )}
             style={{
                 border: isFrozen ? '1px solid rgba(59,130,246,0.2)' : completedToday ? '1px solid rgba(0,229,186,0.2)' : '1px solid var(--card-border)',
@@ -164,9 +164,9 @@ export default function HabitCard({
                         onClick={handleComplete}
                         disabled={completing || completedToday || isFrozen}
                         className={cn(
-                            "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 relative overflow-hidden group/btn",
+                            "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500 relative overflow-hidden group/btn",
                             completedToday
-                                ? "bg-accent text-white shadow-[0_0_15px_var(--accent-glow)]"
+                                ? "bg-accent text-white shadow-[0_0_12px_var(--accent-glow)]"
                                 : isFrozen
                                     ? "bg-blue-500/30 text-blue-500 dark:text-blue-400 border border-blue-500/40 cursor-not-allowed"
                                     : "bg-foreground/[0.05] hover:bg-foreground/[0.1] text-foreground/40 hover:text-foreground"
@@ -189,18 +189,18 @@ export default function HabitCard({
                                     animate={{ scale: 1, opacity: 1 }}
                                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                                 >
-                                    <Check className="w-6 h-6 stroke-[3]" />
+                                    <Check className="w-5 h-5 stroke-[3]" />
                                 </motion.div>
                             ) : isFrozen ? (
-                                <Snowflake className="w-6 h-6 animate-pulse" />
+                                <Snowflake className="w-5 h-5 animate-pulse" />
                             ) : (
                                 <motion.div
                                     key="idle"
                                     initial={{ scale: 0.8 }}
                                     whileHover={{ scale: 1.1 }}
-                                    className="group-hover/btn:scale-110 transition-transform"
+                                    className="group-hover/btn:scale-105 transition-transform"
                                 >
-                                    <Check className="w-6 h-6" />
+                                    <Check className="w-5 h-5" />
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -227,25 +227,25 @@ export default function HabitCard({
                     </div>
 
                     <h3 className={cn(
-                        "text-lg font-display font-bold truncate transition-all duration-300",
+                        "text-base font-display font-bold truncate transition-all duration-300",
                         (completedToday || isFrozen) ? "text-foreground/40 line-through decoration-foreground/20" : "text-foreground"
                     )}>
                         {habit.title}
                     </h3>
 
                     {habit.description && (
-                        <p className="text-xs truncate mt-1 text-foreground/60 font-medium">
+                        <p className="text-[11px] truncate mt-0.5 text-foreground/60 font-medium">
                             {habit.description}
                         </p>
                     )}
 
-                    <div className="flex items-center gap-4 mt-3">
-                        <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-foreground/[0.03] border border-foreground/[0.05]">
-                            <Flame className={cn("w-3.5 h-3.5 transition-colors", localStreak > 0 ? "text-orange-500" : "text-foreground/20")} />
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-foreground/70">
+                    <div className="flex items-center gap-3 mt-2">
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-foreground/[0.03] border border-foreground/[0.05]">
+                            <Flame className={cn("w-3 h-3 transition-colors", localStreak > 0 ? "text-orange-500" : "text-foreground/20")} />
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-foreground/70">
                                 {localStreak} Day Streak
                             </span>
-                            {localStreak > 0 && <span className="text-xs">{getStreakEmoji(localStreak)}</span>}
+                            {localStreak > 0 && <span className="text-[11px]">{getStreakEmoji(localStreak)}</span>}
                         </div>
                     </div>
                 </div>

@@ -29,22 +29,22 @@ export default function AnalyticsPage() {
     if (isLoading) return <AnalyticsSkeleton />;
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-12">
-            <div className="mb-10 flex items-center gap-4">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+            <div className="mb-6 flex items-center gap-3">
                 <Link href="/dashboard" className="p-2 hover:bg-white/5 rounded-xl transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-display font-bold tracking-tight">Insights & <span className="gradient-text">Analytics</span></h1>
-                    <p className="text-muted-foreground text-sm">Deep dive into your habits and momentum.</p>
+                    <h1 className="text-2xl font-display font-bold tracking-tight">Insights & <span className="gradient-text">Analytics</span></h1>
+                    <p className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold opacity-50">Deep dive into your habits and momentum.</p>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="glass p-6 rounded-[2rem] border border-white/5"
+                    className="glass p-4 rounded-xl border border-white/5"
                 >
                     <div className="flex items-center gap-3 mb-4">
                         <div className="p-2 rounded-xl bg-primary/10 text-primary">
@@ -60,7 +60,7 @@ export default function AnalyticsPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="glass p-6 rounded-[2rem] border border-white/5"
+                    className="glass p-4 rounded-xl border border-white/5"
                 >
                     <div className="flex items-center gap-3 mb-4">
                         <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
@@ -78,7 +78,7 @@ export default function AnalyticsPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="glass p-6 rounded-[2rem] border border-white/5"
+                    className="glass p-4 rounded-xl border border-white/5"
                 >
                     <div className="flex items-center gap-3 mb-4">
                         <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400">
@@ -93,15 +93,15 @@ export default function AnalyticsPage() {
                 </motion.div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Progression Chart */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="glass p-8 rounded-[2.5rem] border border-white/5 min-h-[400px]"
+                    className="glass p-4 rounded-xl border border-white/5 min-h-[300px]"
                 >
-                    <h2 className="text-xl font-display font-bold mb-8">Completion Progression</h2>
-                    <div className="h-[300px] w-full">
+                    <h2 className="text-base font-display font-bold mb-6">Completion Progression</h2>
+                    <div className="h-[240px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={chartData}>
                                 <defs>
@@ -152,10 +152,10 @@ export default function AnalyticsPage() {
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="glass p-8 rounded-[2.5rem] border border-white/5 min-h-[400px]"
+                    className="glass p-4 rounded-xl border border-white/5 min-h-[300px]"
                 >
-                    <h2 className="text-xl font-display font-bold mb-8">Category Success Rates</h2>
-                    <div className="h-[300px] w-full">
+                    <h2 className="text-base font-display font-bold mb-6">Category Success Rates</h2>
+                    <div className="h-[240px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={stats?.categoryStats}>
                                 <XAxis
@@ -191,13 +191,13 @@ export default function AnalyticsPage() {
 
 function AnalyticsSkeleton() {
     return (
-        <div className="max-w-6xl mx-auto px-4 py-12 animate-pulse">
-            <div className="h-10 w-64 bg-white/5 rounded-xl mb-10" />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                {[1, 2, 3].map(i => <div key={i} className="h-32 bg-white/5 rounded-[2rem]" />)}
+        <div className="max-w-6xl mx-auto px-4 py-8 animate-pulse">
+            <div className="h-8 w-64 bg-white/5 rounded-xl mb-6" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {[1, 2, 3].map(i => <div key={i} className="h-24 bg-white/5 rounded-xl" />)}
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {[1, 2].map(i => <div key={i} className="h-[400px] bg-white/5 rounded-[2.5rem]" />)}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {[1, 2].map(i => <div key={i} className="h-[300px] bg-white/5 rounded-xl" />)}
             </div>
         </div>
     );

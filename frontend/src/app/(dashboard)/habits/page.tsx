@@ -139,9 +139,9 @@ export default function HabitsPage() {
                 className="flex items-center justify-between mb-6"
             >
                 <div>
-                    <h1 className="text-3xl font-display font-bold tracking-tight">My <span className="gradient-text">Habits</span></h1>
+                    <h1 className="text-2xl font-display font-bold tracking-tight">My <span className="gradient-text">Habits</span></h1>
                     {!isLoading && total > 0 && (
-                        <p className="text-sm mt-1 opacity-60">
+                        <p className="text-[10px] mt-0.5 uppercase tracking-wider font-bold text-muted-foreground/50">
                             {completedToday}/{total} completed today
                         </p>
                     )}
@@ -149,28 +149,28 @@ export default function HabitsPage() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => mutate()}
-                        className="p-2.5 rounded-xl border bg-white/5 border-white/10 text-white/40 hover:text-white transition-all flex items-center gap-2 text-xs font-bold uppercase"
+                        className="p-2 rounded-xl border bg-white/5 border-white/10 text-white/40 hover:text-white transition-all flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest"
                         disabled={isValidating}
                     >
-                        <RefreshCw className={cn("w-4 h-4", (isValidating) && "animate-spin")} />
+                        <RefreshCw className={cn("w-3.5 h-3.5", (isValidating) && "animate-spin")} />
                         <span className="hidden lg:inline">{isValidating ? "Syncing..." : "Refresh"}</span>
                     </button>
                     <button
                         onClick={() => setShowArchived(!showArchived)}
                         className={cn(
-                            "p-2.5 rounded-xl border transition-all duration-300 flex items-center gap-2 text-xs font-bold uppercase tracking-wider",
+                            "p-2 rounded-xl border transition-all duration-300 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest",
                             showArchived
                                 ? "bg-accent/10 border-accent/20 text-accent"
                                 : "bg-white/5 border-white/10 text-white/40 hover:text-white hover:bg-white/10"
                         )}
                         aria-label={showArchived ? "View active habits" : "View archived habits"}
                     >
-                        {showArchived ? <ArchiveRestore className="w-4 h-4" /> : <Archive className="w-4 h-4" />}
+                        {showArchived ? <ArchiveRestore className="w-3.5 h-3.5" /> : <Archive className="w-3.5 h-3.5" />}
                         <span className="hidden md:inline">{showArchived ? "Active" : "Archived"}</span>
                     </button>
                     <button
                         onClick={openCreate}
-                        className="btn-premium btn-premium-primary flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                        className="px-4 py-2 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all shadow-lg shadow-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                         aria-label="Create new habit"
                     >
                         <Plus className="w-4 h-4" aria-hidden="true" />

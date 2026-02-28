@@ -109,7 +109,7 @@ export default function HabitForm({ habit, open, onClose, onSaved }: HabitFormPr
                         aria-labelledby="habit-form-title"
                     >
                         <div
-                            className="w-full max-w-md rounded-3xl p-8 shadow-2xl glass border border-foreground/[0.05] relative overflow-hidden"
+                            className="w-full max-w-md rounded-xl p-6 shadow-2xl glass border border-white/10 relative overflow-hidden"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Decorative background glow */}
@@ -117,7 +117,7 @@ export default function HabitForm({ habit, open, onClose, onSaved }: HabitFormPr
 
                             {/* Header */}
                             <div className="flex items-center justify-between mb-8">
-                                <h2 id="habit-form-title" className="text-2xl font-display font-bold tracking-tight text-foreground">
+                                <h2 id="habit-form-title" className="text-xl font-display font-bold tracking-tight text-foreground">
                                     {isEditing ? 'Edit' : 'New'} <span className="gradient-text">Habit</span>
                                 </h2>
                                 <button
@@ -141,7 +141,7 @@ export default function HabitForm({ habit, open, onClose, onSaved }: HabitFormPr
                                         type="text"
                                         autoFocus
                                         placeholder="What will you achieve today?"
-                                        className="w-full px-4 py-3.5 rounded-2xl text-base transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-foreground/[0.03] border border-foreground/[0.05] hover:border-foreground/[0.1] text-foreground"
+                                        className="w-full px-3.5 py-2.5 rounded-xl text-sm transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary bg-foreground/[0.03] border border-foreground/[0.05] hover:border-foreground/[0.1] text-foreground"
                                         style={{
                                             borderColor: errors.title ? 'rgba(239, 68, 68, 0.4)' : undefined,
                                         }}
@@ -165,7 +165,7 @@ export default function HabitForm({ habit, open, onClose, onSaved }: HabitFormPr
                                         id="habit-desc"
                                         rows={2}
                                         placeholder="Add a reason or secondary goal..."
-                                        className="w-full px-4 py-3.5 rounded-2xl text-sm resize-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-foreground/[0.03] border border-foreground/[0.05] hover:border-foreground/[0.1] text-foreground"
+                                        className="w-full px-3.5 py-2.5 rounded-xl text-xs resize-none transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary bg-foreground/[0.03] border border-foreground/[0.05] hover:border-foreground/[0.1] text-foreground"
                                     />
                                 </div>
 
