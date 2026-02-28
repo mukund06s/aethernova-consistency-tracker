@@ -51,15 +51,15 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: -12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="mb-8 flex items-end justify-between"
+                className="mb-6 flex items-end justify-between"
             >
                 <div>
-                    <h1 className="text-3xl font-display font-bold tracking-tight">
+                    <h1 className="text-2xl font-display font-bold tracking-tight">
                         Good{' '}
                         <span className="gradient-text">{greeting}</span>
                         {user?.name ? `, ${user.name.split(' ')[0]}` : ''} 👋
                     </h1>
-                    <p className="text-sm mt-1 text-muted-foreground">
+                    <p className="text-[10px] mt-0.5 uppercase tracking-wider font-bold text-muted-foreground/50">
                         {new Date().toLocaleDateString('en-US', {
                             weekday: 'long',
                             month: 'long',
@@ -69,7 +69,7 @@ export default function DashboardPage() {
                 </div>
                 <button
                     onClick={toggleWeeklyReview}
-                    className="px-5 py-2.5 rounded-2xl bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2 group"
+                    className="px-4 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 group shadow-sm hover:shadow-primary/10"
                 >
                     <Trophy className="w-4 h-4 group-hover:animate-bounce" />
                     Weekly Review
@@ -80,28 +80,28 @@ export default function DashboardPage() {
             <StatsCards stats={stats ?? null} loading={isLoading} />
 
             {/* Daily Quote */}
-            <div className="mb-8">
+            <div className="mb-6">
                 <DailyQuote />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
                 {/* Weekly Chart */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.4 }}
-                    className="lg:col-span-2 rounded-2xl glass p-6"
+                    className="lg:col-span-2 rounded-xl glass p-4"
                 >
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-4">
                         <h2 className="text-base font-semibold font-display">Weekly Activity</h2>
                         <div className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] uppercase tracking-wider font-bold opacity-60">
                             Last 7 Days
                         </div>
                     </div>
                     {isLoading ? (
-                        <Skeleton className="h-64 rounded-xl" />
+                        <Skeleton className="h-[220px] md:h-[240px] lg:h-[260px] rounded-xl" />
                     ) : (
-                        <div className="h-64">
+                        <div className="h-[220px] md:h-[240px] lg:h-[260px]">
                             <WeeklyChart data={stats?.weeklyData ?? []} />
                         </div>
                     )}
@@ -124,9 +124,9 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
-                className="rounded-2xl glass p-6"
+                className="rounded-xl glass p-4"
             >
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4">
                     <div>
                         <h2 className="text-base font-semibold font-display">Consistency Map</h2>
                         <p className="text-xs opacity-50 mt-0.5">Your activity over the last 90 days</p>

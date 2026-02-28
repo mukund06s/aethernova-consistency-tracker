@@ -35,7 +35,7 @@ function StatCard({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="glass glass-hover rounded-2xl p-6 relative overflow-hidden group shadow-sm hover:shadow-card transition-shadow"
+            className="glass glass-hover rounded-xl p-4 relative overflow-hidden group shadow-sm hover:shadow-card transition-shadow"
         >
             {/* Top accent line */}
             <div
@@ -43,23 +43,23 @@ function StatCard({
                 style={{ background: accent }}
             />
 
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between mb-3">
                 <div>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
                         {label}
                     </p>
                     <div className="flex items-baseline gap-1">
-                        <h3 className="text-3xl font-display font-bold leading-tight tracking-tight text-foreground">
+                        <h3 className="text-2xl font-display font-bold leading-tight tracking-tight text-foreground">
                             {value}
                         </h3>
                     </div>
                 </div>
                 <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-500 shadow-lg"
+                    className="w-9 h-9 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110 duration-500 shadow-lg"
                     style={{ background: gradient }}
                     aria-hidden="true"
                 >
-                    <Icon className="w-5 h-5 text-white" />
+                    <Icon className="w-4 h-4 text-white" />
                 </div>
             </div>
 
@@ -83,7 +83,7 @@ function StatCard({
 export default function StatsCards({ stats, loading }: StatsCardsProps) {
     if (loading) {
         return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 {[1, 2, 3, 4].map((i) => <StatCardSkeleton key={i} />)}
             </div>
         );
@@ -128,7 +128,7 @@ export default function StatsCards({ stats, loading }: StatsCardsProps) {
 
     return (
         <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
             aria-label="Dashboard statistics"
         >
             {cards.map((card, i) => (

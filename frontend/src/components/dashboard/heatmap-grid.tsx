@@ -83,8 +83,8 @@ export default function HeatmapGrid({ data, loading, onCellClick }: HeatmapGridP
                 {monthLabels.map((m, idx) => (
                     <span
                         key={idx}
-                        className="absolute text-[10px] font-bold text-muted-foreground/40 uppercase tracking-tighter"
-                        style={{ left: `calc(${m.weekIndex} * (12px + 4px))` }}
+                        className="absolute text-[9px] font-bold text-muted-foreground/30 uppercase tracking-tighter"
+                        style={{ left: `calc(${m.weekIndex} * (10px + 3px))` }}
                     >
                         {m.label}
                     </span>
@@ -98,7 +98,7 @@ export default function HeatmapGrid({ data, loading, onCellClick }: HeatmapGridP
                         <div
                             key={i}
                             className="flex items-center justify-end"
-                            style={{ height: 12, minWidth: 12, fontSize: 10, fontWeight: 600, color: 'var(--muted-foreground)', opacity: 0.4 }}
+                            style={{ height: 10, minWidth: 10, fontSize: 9, fontWeight: 600, color: 'var(--muted-foreground)', opacity: 0.3 }}
                         >
                             {i % 2 === 1 ? d : ''}
                         </div>
@@ -106,9 +106,9 @@ export default function HeatmapGrid({ data, loading, onCellClick }: HeatmapGridP
                 </div>
 
                 {/* Grid */}
-                <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-hide">
+                <div className="flex gap-[3px] overflow-x-auto pb-2 scrollbar-hide">
                     {weeks.map((week, weekIndex) => (
-                        <div key={weekIndex} className="flex flex-col gap-1">
+                        <div key={weekIndex} className="flex flex-col gap-[3px]">
                             {week.map((point, dayIndex) => {
                                 const i = weekIndex * DAYS_PER_WEEK + dayIndex;
                                 if (!point) {
@@ -118,7 +118,7 @@ export default function HeatmapGrid({ data, loading, onCellClick }: HeatmapGridP
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 0.03 }}
                                             transition={{ delay: i * 0.005 }}
-                                            className="w-3 h-3 rounded-[2px] bg-white"
+                                            className="w-2.5 h-2.5 rounded-[1.5px] bg-white"
                                             aria-hidden="true"
                                         />
                                     );
@@ -136,9 +136,9 @@ export default function HeatmapGrid({ data, loading, onCellClick }: HeatmapGridP
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: i * 0.005, duration: 0.2 }}
                                         className={cn(
-                                            "heatmap-cell w-3 h-3 rounded-[2px] transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+                                            "heatmap-cell w-2.5 h-2.5 rounded-[1.5px] transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-1 focus-visible:ring-offset-background",
                                             isTodayPoint && "ring-1 ring-white/40 ring-offset-1 ring-offset-background",
-                                            isFull && "shadow-[0_0_8px_rgba(99,102,241,0.4)]"
+                                            isFull && "shadow-[0_0_6px_rgba(99,102,241,0.3)]"
                                         )}
                                         style={{ backgroundColor: color }}
                                         aria-label={label}
@@ -156,16 +156,16 @@ export default function HeatmapGrid({ data, loading, onCellClick }: HeatmapGridP
             </div>
 
             {/* Legend */}
-            <div className="flex items-center gap-2 mt-4 justify-end opacity-50" aria-hidden="true">
-                <span className="text-[10px] font-bold uppercase tracking-wider">Less</span>
+            <div className="flex items-center gap-1.5 mt-3 justify-end opacity-40" aria-hidden="true">
+                <span className="text-[9px] font-bold uppercase tracking-wider">Less</span>
                 {[0, 0.3, 0.6, 1].map((intensity, i) => (
                     <div
                         key={i}
-                        className="w-2.5 h-2.5 rounded-[2px]"
+                        className="w-2 h-2 rounded-[1.5px]"
                         style={{ backgroundColor: intensityToColor(intensity) }}
                     />
                 ))}
-                <span className="text-[10px] font-bold uppercase tracking-wider">More</span>
+                <span className="text-[9px] font-bold uppercase tracking-wider">More</span>
             </div>
 
             {/* Tooltip */}

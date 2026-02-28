@@ -33,7 +33,7 @@ export default function DailyQuote() {
 
     return (
         <div
-            className="rounded-xl p-5 relative overflow-hidden"
+            className="rounded-xl p-4 relative overflow-hidden"
             style={{
                 background: 'linear-gradient(135deg, rgba(108,99,255,0.12) 0%, rgba(0,212,170,0.08) 100%)',
                 border: '1px solid rgba(108,99,255,0.2)',

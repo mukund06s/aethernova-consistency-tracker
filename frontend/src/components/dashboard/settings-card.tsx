@@ -58,11 +58,11 @@ export default function SettingsCard() {
         <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="glass rounded-3xl p-6 h-full flex flex-col"
+            className="glass rounded-xl p-4 h-full flex flex-col"
             style={{ border: '1px solid var(--card-border)' }}
         >
-            <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                     <User className="w-5 h-5" />
                 </div>
                 <div>
@@ -71,7 +71,7 @@ export default function SettingsCard() {
                 </div>
             </div>
 
-            <form onSubmit={handleSave} className="flex-1 space-y-8">
+            <form onSubmit={handleSave} className="flex-1 space-y-4">
                 {/* Profile Section */}
                 <div className="space-y-4">
                     <h3 className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground flex items-center gap-2">
@@ -83,13 +83,13 @@ export default function SettingsCard() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Full Name"
-                            className="w-full bg-foreground/[0.03] border border-foreground/[0.05] rounded-2xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all hover:border-foreground/[0.1]"
+                            className="w-full bg-foreground/[0.03] border border-foreground/[0.05] rounded-xl px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all hover:border-foreground/[0.1]"
                         />
                         <input
                             type="email"
                             value={user?.email}
                             disabled
-                            className="w-full bg-foreground/[0.03] border border-foreground/[0.05] rounded-2xl px-4 py-3 text-sm text-foreground opacity-50 cursor-not-allowed"
+                            className="w-full bg-foreground/[0.03] border border-foreground/[0.05] rounded-xl px-4 py-2 text-sm text-foreground opacity-50 cursor-not-allowed"
                         />
                     </div>
                 </div>
@@ -100,8 +100,8 @@ export default function SettingsCard() {
                         <Sparkles className="w-3 h-3" /> Experience Defaults
                     </h3>
 
-                    <div className="grid grid-cols-1 gap-4">
-                        <div className="flex items-center justify-between p-4 rounded-2xl bg-foreground/[0.03] border border-foreground/[0.05]">
+                    <div className="grid grid-cols-1 gap-2">
+                        <div className="flex items-center justify-between p-3 rounded-xl bg-foreground/[0.03] border border-foreground/[0.05]">
                             <div className="flex items-center gap-3">
                                 <Sparkles className="w-4 h-4 text-accent" />
                                 <div>
@@ -118,7 +118,7 @@ export default function SettingsCard() {
                             </button>
                         </div>
 
-                        <div className="flex items-center justify-between p-4 rounded-2xl bg-foreground/[0.03] border border-foreground/[0.05]">
+                        <div className="flex items-center justify-between p-3 rounded-xl bg-foreground/[0.03] border border-foreground/[0.05]">
                             <div className="flex items-center gap-3">
                                 <Volume2 className="w-4 h-4 text-primary" />
                                 <div>
@@ -147,7 +147,7 @@ export default function SettingsCard() {
                             type="time"
                             value={reminderTime}
                             onChange={(e) => setReminderTime(e.target.value)}
-                            className="w-full bg-foreground/[0.03] border border-foreground/[0.05] rounded-2xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all group-hover:border-foreground/[0.1]"
+                            className="w-full bg-foreground/[0.03] border border-foreground/[0.05] rounded-xl px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all group-hover:border-foreground/[0.1]"
                         />
                     </div>
                 </div>
@@ -156,7 +156,7 @@ export default function SettingsCard() {
                     <button
                         type="submit"
                         disabled={saving || !hasChanges}
-                        className="btn-premium w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden shadow-lg shadow-primary/20"
+                        className="btn-premium w-full flex items-center justify-center gap-2 py-2.5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden shadow-lg shadow-primary/20"
                     >
                         {saving ? (
                             <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -170,7 +170,7 @@ export default function SettingsCard() {
                 </div>
             </form>
 
-            <div className="mt-12 pt-8 border-t border-white/5">
+            <div className="mt-6 pt-4 border-t border-white/5">
                 <AnimatePresence mode="wait">
                     {!showDeleteConfirm ? (
                         <motion.button
@@ -191,7 +191,7 @@ export default function SettingsCard() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
-                            className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 space-y-4"
+                            className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 space-y-3"
                         >
                             <div className="flex items-start gap-3">
                                 <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5" />
