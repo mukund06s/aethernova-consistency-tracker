@@ -50,18 +50,68 @@ The system follows a modern decoupled architecture optimized for performance and
 
 ## 🗃️ Database Schema & Relationships
 
-### `User`
-- **Primary Entity**: Stores hashed credentials and global preferences.
-- **Relationship**: `1:N` with `Habit` and `HabitCompletion`.
+The application uses **PostgreSQL** with the following relational model, enforced via **Prisma ORM**.
 
-### `Habit`
-- **Fields**: Title, Description, Category, Order (for D&D), and Archived status.
-- **Relationship**: `N:1` with `User`, `1:N` with `HabitCompletion`.
-- **Note**: Uses `onDelete: Cascade` to maintain data integrity.
+### Entity Relationship Diagram
+```mermaid
+erDiagram
+    USER ||--o{ HABIT : "manages"
+    USER ||--o{ HABIT_COMPLETION : "owns"
+    HABIT ||--o{ HABIT_COMPLETION : "tracks"
 
-### `HabitCompletion`
-- **Fields**: Date (`YYYY-MM-DD`), Note (Reflection), and atomic Timestamp.
-- **Unique Constraint**: `(habitId, date)` ensures users cannot double-track a single habit per day.
+    USER {
+        string id PK
+        string email UK
+        string passwordHash
+        string name
+        datetime createdAt
+    }
+
+    HABIT {
+        string id PK
+        string userId FK
+        string title
+        string category
+        int order
+        boolean archived
+    }
+
+    HABIT_COMPLETION {
+        string id PK
+        string habitId FK
+        string userId FK
+        string date UK "YYYY-MM-DD"
+        string notes
+    }
+```
+
+### Table Definitions
+
+#### 1. `User`
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `id` | CUID | Unique identifier. |
+| `email` | String | User's unique login email. |
+| `passwordHash` | String | Argon2/Bcrypt hashed password. |
+| `reminderTime` | String | User's preference for daily notifications. |
+
+#### 2. `Habit`
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `id` | CUID | Unique identifier. |
+| `userId` | CUID | Foreign key to `User`. |
+| `title` | String | The habit name. |
+| `category` | Enum | Classification (Health, Fitness, etc.). |
+| `order` | Int | Manual sorting position for Drag-and-Drop. |
+
+#### 3. `HabitCompletion`
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `habitId` | CUID | Foreign key to `Habit`. |
+| `date` | String | Format `YYYY-MM-DD` (Timezone-agnostic tracking). |
+| `notes` | String | Optional daily reflection. |
+
+**Database-Level Guard**: A composite unique index on `(habitId, date)` handles the assignment requirement of "preventing multiple completions for the same habit on the same day" at the engine level.
 
 ---
 
