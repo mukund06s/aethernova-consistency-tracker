@@ -67,7 +67,7 @@ export const authApi = {
     me: () =>
         request<{ user: import('./types').User }>('/auth/me'),
 
-    updateSettings: (data: { name?: string; reminderTime?: string; confettiEnabled?: boolean; soundEnabled?: boolean }) =>
+    updateSettings: (data: Record<string, unknown>) =>
         request<{ user: import('./types').User }>('/auth/settings', {
             method: 'PATCH',
             body: JSON.stringify(data),
@@ -175,5 +175,6 @@ export const quotesApi = {
         request<{ quote: import('./types').Quote }>('/quotes/random'),
 };
 
+const api = { authApi, habitsApi, completionsApi, statsApi, quotesApi };
 export { ApiError };
-export default { authApi, habitsApi, completionsApi, statsApi, quotesApi };
+export { api as default };

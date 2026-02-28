@@ -62,7 +62,7 @@ export default function MilestoneBanner({ milestone, onClose }: MilestoneBannerP
             colors,
             gravity: 0.8,
         });
-    }, [milestone]);
+    }, [milestone, user?.confettiEnabled]);
 
     useEffect(() => {
         if (milestone) {

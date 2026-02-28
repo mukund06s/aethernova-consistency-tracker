@@ -1,0 +1,12 @@
+
+> aethernova-backend@1.0.0 lint
+> eslint src --ext .ts
+
+
+D:\Habit Tracker\backend\src\routes\habits.ts
+  313:9   error  'current' is never reassigned. Use 'const' instead  prefer-const
+  321:12  error  Unexpected constant condition                       no-constant-condition
+
+Γ£û 2 problems (2 errors, 0 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

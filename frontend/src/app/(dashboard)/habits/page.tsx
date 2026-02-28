@@ -76,8 +76,9 @@ export default function HabitsPage() {
 
     // Handle global keyboard shortcuts for toggling
     useEffect(() => {
-        const handler = (e: any) => {
-            const index = e.detail.index;
+        const handler = (e: Event) => {
+            const customEvent = e as CustomEvent<{ index: number }>;
+            const index = customEvent.detail.index;
             if (habits && habits[index] && !isCompletedToday(habits[index].completions || [])) {
                 const buttons = document.querySelectorAll('[aria-label="Mark as complete"]');
                 if (buttons[index]) (buttons[index] as HTMLButtonElement).click();

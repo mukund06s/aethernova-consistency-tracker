@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Flame, TrendingUp, CheckCircle2, BarChart2 } from 'lucide-react';
 import { DashboardStats } from '@/lib/types';
-import { getStreakEmoji, formatPercent } from '@/lib/utils';
+import { formatPercent } from '@/lib/utils';
 import { StatCardSkeleton } from '@/components/ui/skeleton';
 
 interface StatsCardsProps {

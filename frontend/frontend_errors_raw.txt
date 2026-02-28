@@ -1,0 +1,191 @@
+
+> frontend@0.1.0 lint
+> eslint
+
+
+D:\Habit Tracker\frontend\src\app\(dashboard)\analytics\page.tsx
+   8:26  warning  'PieChart' is defined but never used                             @typescript-eslint/no-unused-vars
+   8:36  warning  'Pie' is defined but never used                                  @typescript-eslint/no-unused-vars
+  11:51  warning  'Calendar' is defined but never used                             @typescript-eslint/no-unused-vars
+  13:10  warning  'Skeleton' is defined but never used                             @typescript-eslint/no-unused-vars
+  17:26  warning  'error' is assigned a value but never used                       @typescript-eslint/no-unused-vars
+  92:80  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\Habit Tracker\frontend\src\app\(dashboard)\habits\[id]\page.tsx
+  8:10  warning  'HabitStats' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Habit Tracker\frontend\src\app\(dashboard)\habits\page.tsx
+  79:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Habit Tracker\frontend\src\components\dashboard\daily-quote.tsx
+  25:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\Habit Tracker\frontend\src\components\dashboard\daily-quote.tsx:25:9
+  23 |
+  24 |     useEffect(() => {
+> 25 |         fetchQuote().finally(() => setLoading(false));
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  26 |     }, []);
+  27 |
+  28 |     const handleRefresh = async () => {  react-hooks/set-state-in-effect
+
+D:\Habit Tracker\frontend\src\components\dashboard\milestone-banner.tsx
+  32:38  error    Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `user?.confettiEnabled`, but the source dependencies were [milestone]. Inferred different dependency than source.
+
+D:\Habit Tracker\frontend\src\components\dashboard\milestone-banner.tsx:32:38
+  30 |     const firedRef = useRef(false);
+  31 |
+> 32 |     const fireConfetti = useCallback(() => {
+     |                                      ^^^^^^^
+> 33 |         if (firedRef.current || !user?.confettiEnabled) return;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 34 |         firedRef.current = true;
+     ΓÇª
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 64 |         });
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 65 |     }, [milestone]);
+     | ^^^^^^ Could not preserve existing manual memoization
+  66 |
+  67 |     useEffect(() => {
+  68 |         if (milestone) {  react-hooks/preserve-manual-memoization
+  65:8   warning  React Hook useCallback has a missing dependency: 'user?.confettiEnabled'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/exhaustive-deps
+
+D:\Habit Tracker\frontend\src\components\dashboard\settings-card.tsx
+  4:10  warning  'Bell' is defined but never used          @typescript-eslint/no-unused-vars
+  4:29  warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Habit Tracker\frontend\src\components\dashboard\stats-cards.tsx
+  6:10  warning  'getStreakEmoji' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Habit Tracker\frontend\src\components\dashboard\weekly-review-modal.tsx
+    4:33  warning  'Calendar' is defined but never used     @typescript-eslint/no-unused-vars
+    7:36  warning  'RefreshCw' is defined but never used    @typescript-eslint/no-unused-vars
+  184:10  warning  'CheckSquare' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Habit Tracker\frontend\src\components\habits\drag-drop-list.tsx
+  25:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Habit Tracker\frontend\src\components\habits\habit-card.tsx
+  34:13  warning  'user' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Habit Tracker\frontend\src\components\habits\habit-form.tsx
+  54:30  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+D:\Habit Tracker\frontend\src\components\habits\habit-form.tsx:54:30
+  52 |     }, [open, habit, reset]);
+  53 |
+> 54 |     const selectedCategory = watch('category') as HabitCategory;
+     |                              ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  55 |
+  56 |     const onSubmit = async (data: HabitFormData) => {
+  57 |         try {  react-hooks/incompatible-library
+
+D:\Habit Tracker\frontend\src\components\layout\notification-service.tsx
+  46:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Habit Tracker\frontend\src\components\layout\shortcut-handler.tsx
+   9:10  warning  'habitsApi' is defined but never used             @typescript-eslint/no-unused-vars
+  10:10  warning  'toast' is defined but never used                 @typescript-eslint/no-unused-vars
+  11:10  warning  'Habit' is defined but never used                 @typescript-eslint/no-unused-vars
+  32:15  warning  'habitsCache' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Habit Tracker\frontend\src\components\layout\sidebar.tsx
+  186:26  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+D:\Habit Tracker\frontend\src\components\layout\sidebar.tsx:186:26
+  184 |                         aria-label="Mobile sidebar navigation"
+  185 |                     >
+> 186 |                         <NavContent />
+      |                          ^^^^^^^^^^ This component is created during render
+  187 |                     </motion.aside>
+  188 |                 )}
+  189 |             </AnimatePresence>
+
+D:\Habit Tracker\frontend\src\components\layout\sidebar.tsx:46:24
+   44 |     };
+   45 |
+>  46 |     const NavContent = () => (
+      |                        ^^^^^^^
+>  47 |         <div className="flex flex-col h-full py-6 px-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  48 |             {/* Logo */}
+      ΓÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 138 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 139 |     );
+      | ^^^^^^ The component is created during render here
+  140 |
+  141 |     return (
+  142 |         <>  react-hooks/static-components
+  197:18  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+D:\Habit Tracker\frontend\src\components\layout\sidebar.tsx:197:18
+  195 |                 aria-label="Sidebar navigation"
+  196 |             >
+> 197 |                 <NavContent />
+      |                  ^^^^^^^^^^ This component is created during render
+  198 |             </aside>
+  199 |         </>
+  200 |     );
+
+D:\Habit Tracker\frontend\src\components\layout\sidebar.tsx:46:24
+   44 |     };
+   45 |
+>  46 |     const NavContent = () => (
+      |                        ^^^^^^^
+>  47 |         <div className="flex flex-col h-full py-6 px-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  48 |             {/* Logo */}
+      ΓÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 138 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 139 |     );
+      | ^^^^^^ The component is created during render here
+  140 |
+  141 |     return (
+  142 |         <>                                                                                       react-hooks/static-components
+
+D:\Habit Tracker\frontend\src\contexts\theme-context.tsx
+  21:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\Habit Tracker\frontend\src\contexts\theme-context.tsx:21:13
+  19 |         const savedTheme = localStorage.getItem('theme') as Theme | null;
+  20 |         if (savedTheme) {
+> 21 |             setTheme(savedTheme);
+     |             ^^^^^^^^ Avoid calling setState() directly within an effect
+  22 |         } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+  23 |             setTheme('light');
+  24 |         }  react-hooks/set-state-in-effect
+
+D:\Habit Tracker\frontend\src\hooks\useCompletionFeedback.ts
+  29:69  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Habit Tracker\frontend\src\lib\api.ts
+  179:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+Γ£û 31 problems (10 errors, 21 warnings)
+

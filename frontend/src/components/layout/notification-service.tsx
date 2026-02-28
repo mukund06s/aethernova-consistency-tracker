@@ -43,7 +43,8 @@ export default function NotificationService() {
         };
 
         // Expose a test method to window for the UI to trigger
-        (window as any).sendTestNotification = () => {
+        const win = window as unknown as Window & { sendTestNotification?: () => void };
+        win.sendTestNotification = () => {
             triggerNotification("This is a test notification from AetherNova! Everything is working correctly. ✨");
         };
 
@@ -54,7 +55,7 @@ export default function NotificationService() {
 
         return () => {
             clearInterval(interval);
-            delete (window as any).sendTestNotification;
+            delete win.sendTestNotification;
         };
     }, [user]);
 

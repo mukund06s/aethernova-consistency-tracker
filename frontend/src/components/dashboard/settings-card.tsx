@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell, Save, Clock, CheckCircle2, User, Sparkles, Volume2, Trash2, AlertTriangle } from 'lucide-react';
+import { Save, Clock, User, Sparkles, Volume2, Trash2, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { authApi } from '@/lib/api';
 import { toast } from 'sonner';

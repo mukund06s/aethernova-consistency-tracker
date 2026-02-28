@@ -28,11 +28,15 @@ const NAV_ITEMS = [
     { href: '/dashboard#settings', label: 'Settings', icon: Settings },
 ];
 
-export default function Sidebar() {
-    const pathname = usePathname();
+interface NavContentProps {
+    pathname: string;
+    user: import('@/lib/types').User | null;
+    logout: () => Promise<void>;
+    setMobileOpen: (open: boolean) => void;
+}
+
+const NavContent = ({ pathname, user, logout, setMobileOpen }: NavContentProps) => {
     const router = useRouter();
-    const { user, logout } = useAuth();
-    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleLogout = async () => {
         try {
@@ -43,7 +47,7 @@ export default function Sidebar() {
         }
     };
 
-    const NavContent = () => (
+    return (
         <div className="flex flex-col h-full py-6 px-4">
             {/* Logo */}
             <div className="flex items-center justify-between mb-8">
@@ -137,6 +141,12 @@ export default function Sidebar() {
             </div>
         </div>
     );
+};
+
+export default function Sidebar() {
+    const pathname = usePathname();
+    const { user, logout } = useAuth();
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
         <>
@@ -183,7 +193,7 @@ export default function Sidebar() {
                         style={{ borderRight: '1px solid var(--card-border)' }}
                         aria-label="Mobile sidebar navigation"
                     >
-                        <NavContent />
+                        <NavContent pathname={pathname} user={user} logout={logout} setMobileOpen={setMobileOpen} />
                     </motion.aside>
                 )}
             </AnimatePresence>
@@ -194,7 +204,7 @@ export default function Sidebar() {
                 style={{ background: 'var(--card)', borderRight: '1px solid var(--card-border)' }}
                 aria-label="Sidebar navigation"
             >
-                <NavContent />
+                <NavContent pathname={pathname} user={user} logout={logout} setMobileOpen={setMobileOpen} />
             </aside>
         </>
     );

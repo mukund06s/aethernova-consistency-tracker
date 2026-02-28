@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Check, X, CalendarDays } from 'lucide-react';
 import Link from 'next/link';
 import { habitsApi, completionsApi, statsApi } from '@/lib/api';
-import { HabitStats, HabitCompletion } from '@/lib/types';
+import { HabitCompletion } from '@/lib/types';
 import { formatDate, formatDateShort, getCategoryInfo, getStreakEmoji, getTodayString, isCompletedToday, cn } from '@/lib/utils';
 import { ErrorState } from '@/components/ui/error-state';
 import { Skeleton } from '@/components/ui/skeleton';

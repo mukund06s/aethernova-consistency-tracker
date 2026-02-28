@@ -2,7 +2,7 @@
 
 A production-ready, full-stack habit tracking application built with Next.js 15 (App Router) + Express + PostgreSQL.
 
-**Live URL:** [aethernova-consistency-tracker.vercel.app](https://aethernova-consistency-tracker.vercel.app)  
+**Live URL:** [aethernova-consistency-tracker.vercel.app](https://aethernova-consistency-tracker.vercel.app) (Kindly wait for 1-2 minutes for the initial load as the backend spins up)  
 **Backend API:** [aethernova-consistency-tracker.onrender.com](https://aethernova-consistency-tracker.onrender.com)
 
 ---
@@ -255,7 +255,9 @@ To exceed standard requirements, the following high-impact features were impleme
 - **Reminder Infrastructure**: Integrated user settings for daily notification preferences with a custom time-picker UI.
 - **Smart Reflection Notes**: Enhanced completion tracking where users can add and update qualitative thoughts per day.
 - **Premium UX Animations**: Framer Motion 12 layout transitions, glassmorphism, and cosmic design tokens.
-- **Production-Grade Health**: A hardened `/health` endpoint that reports real-time Prisma/DB connectivity status.
+- **Weekly Momentum Recap**: A sophisticated review system that captures performance highlights, streaks, and "perfect day" patterns once a week.
+- **Keyboard Discovery System**: Full productivity shortcuts (`N` for new, `K` for discovery) with a premium glassmorphic overlay.
+- **Production-Grade Health**: A hardened `/health` endpoint and 100% ESLint compliance for CI/CD reliability.
 
 ---
 

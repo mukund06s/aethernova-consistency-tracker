@@ -9,7 +9,7 @@ import { cn, getCategoryInfo, getCategoryClass, getStreakEmoji, isCompletedToday
 import { completionsApi, habitsApi } from '@/lib/api';
 import { useSWRConfig } from 'swr';
 import { toast } from 'sonner';
-import { useAuth, ApiError } from '@/contexts/auth-context';
+import { ApiError } from '@/contexts/auth-context';
 import { useCompletionFeedback } from '@/hooks/useCompletionFeedback';
 
 interface HabitCardProps {
@@ -31,7 +31,6 @@ export default function HabitCard({
     dragHandleProps,
     isDragging,
 }: HabitCardProps) {
-    const { user } = useAuth();
     const { mutate: globalMutate } = useSWRConfig();
     const { triggerFeedback } = useCompletionFeedback();
     const [completing, setCompleting] = useState(false);

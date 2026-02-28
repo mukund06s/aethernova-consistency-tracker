@@ -26,7 +26,8 @@ export function useCompletionFeedback() {
         if (!user?.soundEnabled) return;
 
         try {
-            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const win = window as unknown as Window & { webkitAudioContext?: typeof AudioContext };
+            const audioCtx = new (window.AudioContext || win.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 

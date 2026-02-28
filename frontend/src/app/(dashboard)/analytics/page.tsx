@@ -5,16 +5,15 @@ import useSWR from 'swr';
 import { motion } from 'framer-motion';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-    BarChart, Bar, Cell, PieChart, Pie
+    BarChart, Bar, Cell
 } from 'recharts';
 import { statsApi } from '@/lib/api';
-import { Trophy, TrendingUp, PieChart as PieIcon, Calendar, ArrowLeft } from 'lucide-react';
+import { Trophy, TrendingUp, PieChart as PieIcon, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { Skeleton } from '@/components/ui/skeleton';
 import { getCategoryInfo } from '@/lib/utils';
 
 export default function AnalyticsPage() {
-    const { data: stats, error, isLoading } = useSWR('analytics', () => statsApi.analytics());
+    const { data: stats, isLoading } = useSWR('analytics', () => statsApi.analytics());
 
     const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
 
@@ -89,7 +88,7 @@ export default function AnalyticsPage() {
                     <p className="text-3xl font-display font-bold">
                         {getCategoryInfo((([...(stats?.categoryStats || [])].sort((a, b) => b.count - a.count)[0]?.category || 'general')) as import('@/lib/types').HabitCategory).label}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1">Where you're focusing most of your energy.</p>
+                    <p className="text-xs text-muted-foreground mt-1">Where you&apos;re focusing most of your energy.</p>
                 </motion.div>
             </div>
 

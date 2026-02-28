@@ -18,11 +18,13 @@ export default function DailyQuote() {
             setQuote(res.quote);
         } catch {
             toast.error('Failed to load quote.');
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchQuote().finally(() => setLoading(false));
+        fetchQuote();
     }, []);
 
     const handleRefresh = async () => {

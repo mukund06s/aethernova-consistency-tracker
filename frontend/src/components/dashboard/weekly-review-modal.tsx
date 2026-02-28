@@ -1,10 +1,10 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Trophy, TrendingUp, Calendar, Zap, Share2 } from 'lucide-react';
+import { X, Trophy, TrendingUp, Zap, Share2 } from 'lucide-react';
 import useSWR from 'swr';
 import { statsApi } from '@/lib/api';
-import { CheckSquare as CheckIcon, RefreshCw } from 'lucide-react';
+import { CheckSquare as CheckIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface WeeklyReviewModalProps {
@@ -178,9 +178,4 @@ export default function WeeklyReviewModal({ isOpen, onClose }: WeeklyReviewModal
             )}
         </AnimatePresence>
     );
-}
-
-// Simple internal icon component if Lucide's CheckSquare isn't available
-function CheckSquare({ className }: { className?: string }) {
-    return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>;
 }

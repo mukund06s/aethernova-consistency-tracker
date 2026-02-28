@@ -22,7 +22,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { Habit } from '@/lib/types';
 import HabitCard from './habit-card';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { habitsApi } from '@/lib/api';
 import { toast } from 'sonner';
 
