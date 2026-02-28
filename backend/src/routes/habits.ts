@@ -310,7 +310,7 @@ export function calculateCurrentStreak(dates: string[], habit?: any): number {
     const startDate = sortedDates[0] === today || sortedDates[0] === yesterday ? sortedDates[0] : null;
 
     // special case: if frozen today, streak is maintained even if no completion today/yesterday
-    let current = startDate || (habit?.isFrozen ? today : null);
+    const current = startDate || (habit?.isFrozen ? today : null);
     if (!current) return 0;
 
     let streak = 0;
@@ -318,7 +318,7 @@ export function calculateCurrentStreak(dates: string[], habit?: any): number {
 
     // Iterate backwards from 'current' (today or yesterday)
     let checkDate = current;
-    while (true) {
+    while (streak < 3650) {
         if (dateIdx < sortedDates.length && sortedDates[dateIdx] === checkDate) {
             streak++;
             dateIdx++;
